@@ -28,11 +28,14 @@ final class Alt implements AltInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($location)
+    public function __construct($location, $language)
     {
         Assertion::url($location);
+        Assertion::string($language);
+        Assertion::notBlank($language);
 
         $this->location = $location;
+        $this->language = $language;
     }
 
     public function location()
@@ -43,35 +46,5 @@ final class Alt implements AltInterface
     public function language()
     {
         return $this->language;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return static
-     */
-    public function withLanguage($language)
-    {
-        Assertion::string($language);
-        Assertion::notBlank($language);
-
-        $instance = clone $this;
-
-        $instance->language = $language;
-
-        return $instance;
-    }
-
-    /**
-     * @param string $location
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return Alt
-     */
-    public static function create($location) {
-        return new Alt($location);
     }
 }
