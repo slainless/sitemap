@@ -13,6 +13,7 @@ use Assert\Assertion;
 use Refinery29\Sitemap\Component\Image\ImageInterface;
 use Refinery29\Sitemap\Component\News\NewsInterface;
 use Refinery29\Sitemap\Component\Video\VideoInterface;
+use Slainless\Sitemap\Component\AltInterface;
 
 final class Url implements UrlInterface
 {
@@ -50,6 +51,11 @@ final class Url implements UrlInterface
      * @var VideoInterface[]
      */
     private $videos = [];
+
+    /**
+     * @var AltInterface[]
+     */
+    private $alternatives = [];
 
     /**
      * @param string $location
@@ -96,6 +102,11 @@ final class Url implements UrlInterface
     public function videos()
     {
         return $this->videos;
+    }
+
+    public function alternatives()
+    {
+        return $this->alternatives;
     }
 
     /**
@@ -212,6 +223,23 @@ final class Url implements UrlInterface
         $instance = clone $this;
 
         $instance->videos = $videos;
+
+        return $instance;
+    }
+
+    /**
+     * @param Alt[] $videos
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return static
+     */
+    public function withAlternatives(array $alternatives) {
+        Assertion::allIsInstanceOf($alternatives, AltInterface::class);
+
+        $instance = clone $this;
+
+        $instance->alternatives = $alternatives;
 
         return $instance;
     }

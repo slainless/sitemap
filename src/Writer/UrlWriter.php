@@ -13,9 +13,11 @@ use Refinery29\Sitemap\Component\Image\ImageInterface;
 use Refinery29\Sitemap\Component\News\NewsInterface;
 use Refinery29\Sitemap\Component\UrlInterface;
 use Refinery29\Sitemap\Component\Video\VideoInterface;
+use Refinery29\Sitemap\Component\AltInterface;
 use Refinery29\Sitemap\Writer\Image\ImageWriter;
 use Refinery29\Sitemap\Writer\News\NewsWriter;
 use Refinery29\Sitemap\Writer\Video\VideoWriter;
+use Slainless\Sitemap\Writer\AltWriter;
 
 /**
  * @link https://support.google.com/webmasters/answer/183668?hl=en
@@ -39,14 +41,21 @@ class UrlWriter
      */
     private $videoWriter;
 
+    /**
+     * @var AltWriter
+     */
+    private $altWriter;
+
     public function __construct(
         ImageWriter $imageWriter = null,
         NewsWriter $newsWriter = null,
-        VideoWriter $videoWriter = null
+        VideoWriter $videoWriter = null,
+        AltWriter $altWriter = null
     ) {
         $this->imageWriter = $imageWriter ?: new ImageWriter();
         $this->newsWriter = $newsWriter ?: new NewsWriter();
         $this->videoWriter = $videoWriter ?: new VideoWriter();
+        $this->altWriter = $altWriter ?: new AltWriter();
     }
 
     public function write(UrlInterface $url, \XMLWriter $xmlWriter)
@@ -60,6 +69,7 @@ class UrlWriter
         $this->writeImages($xmlWriter, $url->images());
         $this->writeNews($xmlWriter, $url->news());
         $this->writeVideos($xmlWriter, $url->videos());
+        $this->writeAlternatives($xmlWriter, $url->alternatives());
 
         $xmlWriter->endElement();
     }
@@ -134,6 +144,17 @@ class UrlWriter
     {
         foreach ($videos as $video) {
             $this->videoWriter->write($video, $xmlWriter);
+        }
+    }
+    
+    /**
+     * @param \XMLWriter       $xmlWriter
+     * @param AltInterface[] $alts
+     */
+    private function writeAlternatives(\XMLWriter $xmlWriter, array $alts = [])
+    {
+        foreach ($alts as $alt) {
+            $this->altWriter->write($alt, $xmlWriter);
         }
     }
 }

@@ -9,6 +9,8 @@
 
 namespace Refinery29\Sitemap\Component;
 
+use Slainless\Sitemap\Component\AltInterface;
+
 /**
  * @link https://support.google.com/webmasters/answer/183668?hl=en
  * @link http://www.sitemaps.org/protocol.html#xmlTagDefinitions
@@ -77,4 +79,9 @@ interface UrlInterface
      * @return Video\VideoInterface[]
      */
     public function videos();
+    
+    /**
+     * @return AltInterface[]
+     */
+    public function alternatives();
 }
