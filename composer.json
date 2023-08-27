@@ -1,6 +1,6 @@
 {
-    "name": "refinery29/sitemap",
-    "description": "Provides components for building and writing a sitemap.",
+    "name": "slainless/sitemap",
+    "description": "Provides components for building and writing a sitemap, forked from refinery29/sitemap.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -32,7 +32,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Refinery29\\Sitemap\\": "src"
+            "Refinery29\\Sitemap\\": "src",
+            "Slainless\\Sitemap\\": "src"
         }
     },
     "autoload-dev": {

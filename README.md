@@ -1,11 +1,32 @@
 # sitemap
 
-[![Build Status](https://travis-ci.org/refinery29/sitemap.svg?branch=master)](https://travis-ci.org/refinery29/sitemap)
-[![Code Climate](https://codeclimate.com/github/refinery29/sitemap/badges/gpa.svg)](https://codeclimate.com/github/refinery29/sitemap)
-[![Latest Stable Version](https://poser.pugx.org/refinery29/sitemap/v/stable)](https://packagist.org/packages/refinery29/sitemap)
-[![Total Downloads](https://poser.pugx.org/refinery29/sitemap/downloads)](https://packagist.org/packages/refinery29/sitemap)
-
 This repository provides components for building and writing XML sitemaps, following Google recommendations.
+
+## What's Different?
+
+This is a fork of [`refinery92/sitemap`](https://github.com/refinery29/sitemap), for my personal usage.
+
+- Added static method `create` to some classes such as `Url`, `News`, `Sitemap`, etc. to allow direct method chaining after object creation
+- Added method to `SitemapIndexWriter` and `UrlSetWriter` to write to URI instead of memory (`writeToUri`)
+- Added localized version support.
+
+Example of localization support to URL:
+```php
+use Refinery29\Sitemap\Component\Url;
+use Slainless\Sitemap\Component\Alt;
+
+$url = Url::create('http://www.example.org/en/bar.html')
+    ->withLastModified(new DateTime())
+    ->withChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+    ->withPriority(0.8)
+    ->withAlternatives([
+        new Alt('http://www.example.org/en/bar.html', 'en'),
+        new Alt('http://www.example.org/id/bar.html', 'id'),
+        new Alt('http://www.example.org/de/bar.html', 'de'),
+        new Alt('http://www.example.org', 'x-default'),
+    ])
+
+```
 
 ## Installation
 
