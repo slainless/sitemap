@@ -17,7 +17,8 @@ interface AltInterface
     /**
      * Constants for XML namespace attribute and URI.
      */
-    const XML_NAMESPACE_ATTRIBUTE = 'xmlns:link';
+    const XML_NAMESPACE_ATTRIBUTE = 'xmlns:xhtml';
+    const XML_NAMESPACE_URI = 'http://www.w3.org/1999/xhtml';
 
     /**
      * @return string

@@ -15,6 +15,7 @@ use Refinery29\Sitemap\Component\News\NewsInterface;
 use Refinery29\Sitemap\Component\UrlInterface;
 use Refinery29\Sitemap\Component\UrlSetInterface;
 use Refinery29\Sitemap\Component\Video\VideoInterface;
+use Slainless\Sitemap\Component\AltInterface;
 
 /**
  * @link https://support.google.com/webmasters/answer/183668?hl=en
@@ -66,6 +67,7 @@ class UrlSetWriter
         $xmlWriter->writeAttribute(ImageInterface::XML_NAMESPACE_ATTRIBUTE, ImageInterface::XML_NAMESPACE_URI);
         $xmlWriter->writeAttribute(NewsInterface::XML_NAMESPACE_ATTRIBUTE, NewsInterface::XML_NAMESPACE_URI);
         $xmlWriter->writeAttribute(VideoInterface::XML_NAMESPACE_ATTRIBUTE, VideoInterface::XML_NAMESPACE_URI);
+        $xmlWriter->writeAttribute(AltInterface::XML_NAMESPACE_ATTRIBUTE, AltInterface::XML_NAMESPACE_URI);
     }
 
     /**
