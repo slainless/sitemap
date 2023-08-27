@@ -9,6 +9,7 @@
 
 namespace Refinery29\Sitemap\Writer;
 
+use Assert\Assertion;
 use Refinery29\Sitemap\Component\SitemapIndexInterface;
 
 /**
@@ -21,9 +22,15 @@ class SitemapIndexWriter
      */
     private $sitemapWriter;
 
+    /**
+     * @var \XMLWriter
+     */
+    private $xmlWriter;
+
     public function __construct(SitemapWriter $sitemapWriter = null)
     {
         $this->sitemapWriter = $sitemapWriter ?: new SitemapWriter();
+        $this->xmlWriter = null;
     }
 
     /**
@@ -37,6 +44,11 @@ class SitemapIndexWriter
         $xmlWriter = $xmlWriter ?: new \XMLWriter();
 
         $xmlWriter->openMemory();
+        $this->_write($sitemapIndex, $xmlWriter);
+        return $xmlWriter->outputMemory();
+    }
+
+    private function _write(SitemapIndexInterface $sitemapIndex, \XMLWriter $xmlWriter) {
         $xmlWriter->startDocument('1.0', 'UTF-8');
 
         $xmlWriter->startElement('sitemapindex');
@@ -49,7 +61,57 @@ class SitemapIndexWriter
         $xmlWriter->endElement();
 
         $xmlWriter->endDocument();
+    }
 
-        return $xmlWriter->outputMemory();
+    public static function create(SitemapWriter $sitemapWriter = null)
+    {
+        return new SitemapIndexWriter($sitemapWriter);
+    }
+
+    /**
+     * @param \XMLWriter            $writer
+     *
+     * @throws \InvalidArgumentException
+     * 
+     * @return string
+     */
+    public function withXMLWriter(\XMLWriter $writer)
+    {
+        Assertion::isInstanceOf($writer, \XMLWriter::class);
+
+        $instance = clone $this;
+
+        $instance->xmlWriter = $writer;
+
+        return $instance;
+    }
+
+    /**
+     * Write XML to memory.
+     * Writer must be flushed manually after operation if using pre-existing writer.
+     * 
+     * @param SitemapIndexInterface $sitemapIndex
+     * @param \XMLWriter            $xmlWriter
+     *
+     * @return string
+     */
+    public function writeToMemory(SitemapIndexInterface $sitemapIndex)
+    {
+        return $this->write($sitemapIndex, $this->xmlWriter);
+    }
+
+    /**
+     * @param SitemapIndexInterface $sitemapIndex
+     * @param string                $Uri
+     * @param \XMLWriter            $xmlWriter
+     *
+     * @return void
+     */
+    public function writeToUri(SitemapIndexInterface $sitemapIndex, string $Uri)
+    {
+        $xmlWriter = $this->xmlWriter ?: new \XMLWriter();
+
+        Assertion::true($xmlWriter->openUri($Uri), "failed to open uri: {$Uri}");
+        $this->_write($sitemapIndex, $xmlWriter);
     }
 }

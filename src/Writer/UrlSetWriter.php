@@ -9,6 +9,7 @@
 
 namespace Refinery29\Sitemap\Writer;
 
+use Assert\Assertion;
 use Refinery29\Sitemap\Component\Image\ImageInterface;
 use Refinery29\Sitemap\Component\News\NewsInterface;
 use Refinery29\Sitemap\Component\UrlInterface;
@@ -25,9 +26,15 @@ class UrlSetWriter
      */
     private $urlWriter;
 
+    /**
+     * @var \XMLWriter
+     */
+    private $xmlWriter;
+
     public function __construct(UrlWriter $urlWriter = null)
     {
         $this->urlWriter = $urlWriter ?: new UrlWriter();
+        $this->xmlWriter = null;
     }
 
     /**
@@ -41,6 +48,12 @@ class UrlSetWriter
         $xmlWriter = $xmlWriter ?: new \XMLWriter();
 
         $xmlWriter->openMemory();
+        $this->_write($urlSet, $xmlWriter);
+        return $xmlWriter->outputMemory();
+    }
+
+    private function _write(UrlSetInterface $urlSet, \XMLWriter $xmlWriter)
+    {
         $xmlWriter->startDocument('1.0', 'UTF-8');
 
         $xmlWriter->startElement('urlset');
@@ -51,8 +64,6 @@ class UrlSetWriter
         $xmlWriter->endElement();
 
         $xmlWriter->endDocument();
-
-        return $xmlWriter->outputMemory();
     }
 
     private function writeNamespaceAttributes(\XMLWriter $xmlWriter)
@@ -72,5 +83,57 @@ class UrlSetWriter
         foreach ($urls as $url) {
             $this->urlWriter->write($url, $xmlWriter);
         }
+    }
+
+    public static function create(UrlWriter $urlWriter = null)
+    {
+        return new UrlSetWriter($urlWriter);
+    }
+
+    /**
+     * @param \XMLWriter            $writer
+     *
+     * @throws \InvalidArgumentException
+     * 
+     * @return string
+     */
+    public function withXMLWriter(\XMLWriter $writer)
+    {
+        Assertion::isInstanceOf($writer, \XMLWriter::class);
+
+        $instance = clone $this;
+
+        $instance->xmlWriter = $writer;
+
+        return $instance;
+    }
+
+    /**
+     * Write XML to memory.
+     * Writer must be flushed manually after operation if using pre-existing writer.
+     * 
+     * @param UrlSetInterface $urlSet
+     * @param \XMLWriter            $xmlWriter
+     *
+     * @return string
+     */
+    public function writeToMemory(UrlSetInterface $urlSet)
+    {
+        return $this->write($urlSet, $this->xmlWriter);
+    }
+
+    /**
+     * @param UrlSetInterface $urlSet
+     * @param string                $Uri
+     * @param \XMLWriter            $xmlWriter
+     *
+     * @return void
+     */
+    public function writeToUri(UrlSetInterface $urlSet, string $Uri)
+    {
+        $xmlWriter = $this->xmlWriter ?: new \XMLWriter();
+
+        Assertion::true($xmlWriter->openUri($Uri), "failed to open uri: {$Uri}");
+        $this->_write($urlSet, $xmlWriter);
     }
 }
