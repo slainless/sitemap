@@ -11,6 +11,7 @@ This is a fork of [`refinery92/sitemap`](https://github.com/refinery29/sitemap),
 - Added localized version support.
 
 Example of localization support to URL:
+
 ```php
 use Refinery29\Sitemap\Component\Url;
 use Slainless\Sitemap\Component\Alt;
