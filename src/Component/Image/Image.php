@@ -150,4 +150,15 @@ final class Image implements ImageInterface
 
         return $instance;
     }
+
+    /**
+     * @param string $location
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Image
+     */
+    public static function create($location) {
+        return new Image($location);
+    }
 }

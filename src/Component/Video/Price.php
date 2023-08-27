@@ -113,4 +113,16 @@ final class Price implements PriceInterface
 
         return $instance;
     }
+
+    /**
+     * @param float  $value
+     * @param string $currency
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Price
+     */
+    public static function create($value, $currency) {
+        return new Price($value, $currency);
+    }
 }

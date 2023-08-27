@@ -64,4 +64,15 @@ final class Uploader implements UploaderInterface
 
         return $instance;
     }
+    
+    /**
+     * @param string $name
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Uploader
+     */
+    public static function create($name) {
+        return new Uploader($name);
+    }
 }

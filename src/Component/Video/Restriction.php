@@ -68,4 +68,15 @@ final class Restriction implements RestrictionInterface
 
         return $instance;
     }
+
+    /**
+     * @param string $relationship
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Restriction
+     */
+    public static function create($relationship) {
+        return new Restriction($relationship);
+    }
 }

@@ -63,4 +63,15 @@ final class GalleryLocation implements GalleryLocationInterface
 
         return $instance;
     }
+    
+    /**
+     * @param string $location
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return GalleryLocation
+     */
+    public static function create($location) {
+        return new GalleryLocation($location);
+    }
 }

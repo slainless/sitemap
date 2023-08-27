@@ -215,4 +215,15 @@ final class Url implements UrlInterface
 
         return $instance;
     }
+    
+    /**
+     * @param string $location
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Url
+     */
+    public static function create($location) {
+        return new Url($location);
+    }
 }

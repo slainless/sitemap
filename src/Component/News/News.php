@@ -188,4 +188,17 @@ final class News implements NewsInterface
 
         return $instance;
     }
+    
+    /**
+     * @param PublicationInterface $publication
+     * @param \DateTimeInterface   $publicationDate
+     * @param string               $title
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return News
+     */
+    public static function create(PublicationInterface $publication, \DateTimeInterface $publicationDate, $title) {
+        return new News($publication, $publicationDate, $title);
+    }
 }

@@ -91,4 +91,15 @@ final class PlayerLocation implements PlayerLocationInterface
 
         return $instance;
     }
+    
+    /**
+     * @param string $location
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return PlayerLocation
+     */
+    public static function create($location) {
+        return new PlayerLocation($location);
+    }
 }

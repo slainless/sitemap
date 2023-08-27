@@ -508,4 +508,25 @@ final class Video implements VideoInterface
 
         return $instance;
     }
+
+    /**
+     * @param string                       $thumbnailLocation
+     * @param string                       $title
+     * @param string                       $description
+     * @param string|null                  $contentLocation
+     * @param PlayerLocationInterface|null $playerLocation
+     *
+     * @throws \InvalidArgumentException
+     * 
+     * @return Video
+     */
+    public function create(
+        $thumbnailLocation,
+        $title,
+        $description,
+        $contentLocation = null,
+        PlayerLocationInterface $playerLocation = null
+    ) {
+        return new Video($thumbnailLocation, $title, $description, $contentLocation, $playerLocation);
+    }
 }

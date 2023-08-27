@@ -74,4 +74,15 @@ final class Platform implements PlatformInterface
 
         return $instance;
     }
+    
+    /**
+     * @param string $relationship
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Platform
+     */
+    public static function create($relationship) {
+        return new Platform($relationship);
+    }
 }

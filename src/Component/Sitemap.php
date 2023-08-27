@@ -58,4 +58,15 @@ final class Sitemap implements SitemapInterface
 
         return $instance;
     }
+    
+    /**
+     * @param string $location
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Sitemap
+     */
+    public static function create($location) {
+        return new Sitemap($location);
+    }
 }
