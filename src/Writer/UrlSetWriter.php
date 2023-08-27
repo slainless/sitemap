@@ -26,15 +26,9 @@ class UrlSetWriter
      */
     private $urlWriter;
 
-    /**
-     * @var \XMLWriter
-     */
-    private $xmlWriter;
-
     public function __construct(UrlWriter $urlWriter = null)
     {
         $this->urlWriter = $urlWriter ?: new UrlWriter();
-        $this->xmlWriter = null;
     }
 
     /**
@@ -91,24 +85,6 @@ class UrlSetWriter
     }
 
     /**
-     * @param \XMLWriter            $writer
-     *
-     * @throws \InvalidArgumentException
-     * 
-     * @return string
-     */
-    public function withXMLWriter(\XMLWriter $writer)
-    {
-        Assertion::isInstanceOf($writer, \XMLWriter::class);
-
-        $instance = clone $this;
-
-        $instance->xmlWriter = $writer;
-
-        return $instance;
-    }
-
-    /**
      * Write XML to memory.
      * Writer must be flushed manually after operation if using pre-existing writer.
      * 
@@ -117,9 +93,9 @@ class UrlSetWriter
      *
      * @return string
      */
-    public function writeToMemory(UrlSetInterface $urlSet)
+    public function writeToMemory(UrlSetInterface $urlSet, \XMLWriter $xmlWriter = null)
     {
-        return $this->write($urlSet, $this->xmlWriter);
+        return $this->write($urlSet, $xmlWriter);
     }
 
     /**
@@ -129,9 +105,9 @@ class UrlSetWriter
      *
      * @return void
      */
-    public function writeToUri(UrlSetInterface $urlSet, string $Uri)
+    public function writeToUri(UrlSetInterface $urlSet, string $Uri, \XMLWriter $xmlWriter = null)
     {
-        $xmlWriter = $this->xmlWriter ?: new \XMLWriter();
+        $xmlWriter = $xmlWriter ?: new \XMLWriter();
 
         Assertion::true($xmlWriter->openUri($Uri), "failed to open uri: {$Uri}");
         $this->_write($urlSet, $xmlWriter);
